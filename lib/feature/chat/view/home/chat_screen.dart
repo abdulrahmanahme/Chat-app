@@ -1,12 +1,12 @@
 import 'package:chat_app/core/app_colors.dart';
-import 'package:chat_app/view/widgets/custom_app_bar.dart';
-import 'package:chat_app/view/widgets/submit_chat_widget.dart';
+import 'package:chat_app/feature/auth/view/widgets/custom_app_bar.dart';
+import 'package:chat_app/feature/auth/view/widgets/submit_chat_widget.dart';
 import 'package:chat_bubbles/bubbles/bubble_normal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
+class ChatScreen extends StatelessWidget {
+  ChatScreen({super.key});
   TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {

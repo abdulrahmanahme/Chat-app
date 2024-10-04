@@ -1,6 +1,6 @@
 import 'package:chat_app/core/app_colors.dart';
 import 'package:chat_app/core/app_const.dart';
-import 'package:chat_app/view/widgets/custom_text_from_field.dart';
+import 'package:chat_app/feature/auth/view/widgets/custom_text_from_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
