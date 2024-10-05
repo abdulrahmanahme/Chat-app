@@ -21,25 +21,30 @@ class AuthCubit extends Cubit<AuthState> {
       required String password,
       required String phone,
       context}) async {
-    emit(RegisterLoadingStates());
+    if (!isClosed) {
+      emit(RegisterLoadingStates());
+    }
     try {
-      final res = await firebaseAuth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      final res = await _authRepo.registerNewUser(
+          name: name, email: email, password: password);
       if (res.user != null) {
+        log('ddddddddddddddddd ${res.user}');
+
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => AllUsersScreen()));
         AppToast.successBar(message: 'Login successfully');
-
-        emit(RegisterSuccessStates());
-      } else {
-        AppToast.errorBar(message: 'The email not successful');
+        if (!isClosed) {
+          emit(RegisterSuccessStates());
+        }
       }
     } on FirebaseAuthException catch (e) {
       AppToast.errorBar(message: e.message);
     } catch (e) {
       log('sssssssss ${e}');
+      if (!isClosed) {
+        emit(RegisterErrorStates());
+      }
+
       AppToast.errorBar(message: 'There is an Error $e');
     }
   }
@@ -50,10 +55,8 @@ class AuthCubit extends Cubit<AuthState> {
       {required String email, required String password, context}) async {
     emit(LoginLoadingStates());
     try {
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      final credential =
+          await _authRepo.signIn(email: email, password: password);
 
       if (credential.user != null) {
         Navigator.push(

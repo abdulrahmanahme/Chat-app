@@ -17,43 +17,41 @@ class ChatCubit extends Cubit<ChatState> {
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   String? currentUserId;
   Timer? _checkTypingTimer;
+  List<Map<String, dynamic>> listUserData=[];
 
-  getChatMessages(String chatId) {
-    emit(LoadingChatState());
-    try {
-      FirebaseFirestore.instance
-          .collection('chats')
-          .doc(chatId)
-          .collection('messages')
-          .orderBy('timestamp', descending: true)
-          .snapshots();
-
-      emit(ChatSuccessState());
-    } catch (error) {
-      emit(ChatErrorState());
-    }
-  }
 
   Future<void> updateOnlineStatus(bool isOnline, String userId) async {
+     if (!isClosed) {
     emit(OnlineStatusLoadingState());
+     }
     try {
       await chatRepo.updateOnlineStatus(isOnline, userId);
+       if (!isClosed) {
       emit(OnlineStatusSuccessState());
+       }
     } catch (e) {
+       if (!isClosed) {
       emit(OnlineStatusErrorState());
+       }
     }
   }
 
   Future<void> isUserTyping(bool isOnline, String userId) async {
+     if (!isClosed) {
     emit(UserTypingLoadingState());
+     }
     try {
       final FirebaseFirestore _firestore = FirebaseFirestore.instance;
       _checkTypingTimer = Timer(const Duration(milliseconds: 600), () async {
         await chatRepo.isUserTyping(isOnline, userId);
       });
+       if (!isClosed) {
       emit(UserTypingSuccessState());
+       }
     } catch (e) {
+       if (!isClosed) {
       emit(UserTypingErrorState());
+       }
     }
   }
 
@@ -63,7 +61,6 @@ class ChatCubit extends Cubit<ChatState> {
       required String text,
       required bool typing,
       required bool isOnline}) async {
-    // emit(UserTypingLoadingState());
 
     chatRepo.sendMessage(userId, {
       'senderId': senderId,
@@ -75,13 +72,21 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   void fetchAllUsers() async {
+     if (!isClosed) {
     emit(GetAllUserLoadingState());
+
+     }
     try {
       final resp = await chatRepo.fetchAllUsers();
+      listUserData=resp;
       currentUserId = currentUser?.uid;
+       if (!isClosed) {
       emit(GetAllUserSuccessState(resp));
+       }
     } catch (error) {
+       if (!isClosed) {
       emit(GetAllUserErrorState(error.toString()));
+       }
     }
   }
 

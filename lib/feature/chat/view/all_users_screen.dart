@@ -1,3 +1,4 @@
+import 'package:chat_app/core/service_locator/service_locator.dart';
 import 'package:chat_app/feature/chat/logic/cubit/chat_cubit.dart';
 import 'package:chat_app/feature/chat/logic/cubit/chat_state.dart';
 import 'package:chat_app/feature/home_screen/chat_detail_screen.dart';
@@ -49,12 +50,15 @@ class AllUsersScreen extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ChatDetailScreen(
-                                userName: user['username'],
-                                chatId: usersRef.path,
-                                currentUserId:
-                                    FirebaseAuth.instance.currentUser!.uid,
-                                otherUserId: user['uid'].toString(),
+                              builder: (context) => BlocProvider.value(
+                               value: BlocProvider.of<ChatCubit>(context),
+                                child: ChatDetailScreen(
+                                  userName: user['username'],
+                                  chatId: usersRef.path,
+                                  currentUserId:
+                                      FirebaseAuth.instance.currentUser!.uid,
+                                  otherUserId: user['uid'].toString(),
+                                ),
                               ),
                             ),
                           );

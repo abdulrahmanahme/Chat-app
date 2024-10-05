@@ -5,7 +5,7 @@ class AuthRepo {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   /// Register as a new user by [Email] , [Name] and  [Phone]
-  Future<UserCredential> registerNewUser({
+ registerNewUser({
     required String name,
     required String email,
     required String password,

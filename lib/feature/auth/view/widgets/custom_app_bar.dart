@@ -3,7 +3,6 @@ import 'package:chat_app/core/app_const.dart';
 import 'package:chat_app/feature/chat/logic/cubit/chat_cubit.dart';
 import 'package:chat_app/feature/chat/logic/cubit/chat_state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -57,23 +56,24 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                           // const Spacer(),
                           Padding(
                             padding: EdgeInsets.only(bottom: 10.h),
-                            child: Row(
-                              children: [
-                                InkWell(
-                                  onTap: () {
+                            child: InkWell(
+                              onTap: (){
                                     Navigator.pop(context);
-                                  },
-                                  child: SvgPicture.asset(
+
+                              },
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(
                                     AppConst.svgPath + 'arrow.svg',
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 10.w,
-                                ),
-                                SvgPicture.asset(
-                                  AppConst.svgPath + 'status50.svg',
-                                ),
-                              ],
+                                  SizedBox(
+                                    width: 10.w,
+                                  ),
+                                  SvgPicture.asset(
+                                    AppConst.svgPath + 'status50.svg',
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                           const Spacer(),
