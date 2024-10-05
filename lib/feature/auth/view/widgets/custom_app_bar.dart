@@ -86,19 +86,22 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                               itemBuilder: (context, index) {
                                 return Row(
                                   children: [
-                                    CircleAvatar(
-                                      radius: 5,
-                                      backgroundColor: messages[index]
-                                              ['isOnline']
-                                          ? Colors.green
-                                          : null,
-                                    ),
+                                    messages[index]['senderId'] != userId
+                                        ? CircleAvatar(
+                                            radius: 5,
+                                            backgroundColor: messages[index]
+                                                    ['isOnline']==true
+                                                ? Colors.green
+                                                : null,
+                                          )
+                                        : Container(),
                                     SizedBox(
                                       width: 10.w,
                                     ),
                                     if (messages[messages.length - 1]
-                                            ['typing'] ==
-                                        true)
+                                                ['typing'] ==
+                                            true &&
+                                        messages[index]['senderId'] != userId)
                                       const Text(
                                         "Typing...",
                                         style: TextStyle(color: Colors.white),

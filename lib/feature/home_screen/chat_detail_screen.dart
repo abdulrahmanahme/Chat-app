@@ -34,21 +34,19 @@ class _ChatDetailScreenState extends State<ChatDetailScreen>
   TextEditingController controller = TextEditingController();
   late ChatCubit chatCubit;
 
-  bool _isTextEmpty = false;
-
   @override
   void initState() {
     chatCubit = BlocProvider.of<ChatCubit>(globleKey.currentContext!);
 
     WidgetsBinding.instance.addObserver(this);
-    chatCubit.updateOnlineStatus(true, widget.otherUserId);
+    chatCubit.updateOnlineStatus(true, widget.currentUserId);
     super.initState();
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    chatCubit.updateOnlineStatus(false, widget.otherUserId);
+    chatCubit.updateOnlineStatus(false, widget.currentUserId);
     controller.dispose();
 
     super.dispose();
@@ -57,14 +55,10 @@ class _ChatDetailScreenState extends State<ChatDetailScreen>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      chatCubit.updateOnlineStatus(true, widget.otherUserId);
+      chatCubit.updateOnlineStatus(true, widget.currentUserId);
     } else {
-      chatCubit.updateOnlineStatus(false, widget.otherUserId);
+      chatCubit.updateOnlineStatus(false, widget.currentUserId);
     }
-  }
-
-  void _checkIfTextIsEmpty() {
-    _isTextEmpty = controller.text.isEmpty;
   }
 
   @override
@@ -73,7 +67,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen>
       backgroundColor: AppColors.defaultBlackColor,
       appBar: CustomAppBar(
         userName: widget.userName,
-        userId: widget.otherUserId,
+        userId: widget.currentUserId,
         image: '',
       ),
       body: BlocConsumer<ChatCubit, ChatState>(
@@ -152,9 +146,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen>
                 );
             controller.clear();
           } else {
-            context
-                .read<ChatCubit>()
-                .updateOnlineStatus(true, widget.otherUserId);
+            context.read<ChatCubit>().isUserTyping(true, widget.otherUserId);
           }
         },
       ),

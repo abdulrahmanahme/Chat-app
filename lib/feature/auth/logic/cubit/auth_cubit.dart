@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:chat_app/feature/auth/logic/cubit/auth_state.dart';
 import 'package:chat_app/feature/auth/model/repositories/auth/auth_repo.dart';
-import 'package:chat_app/feature/chat/view/all_users_screen.dart';
 import 'package:chat_app/feature/home_screen/view/all_users_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

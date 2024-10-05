@@ -18,6 +18,6 @@ class ServiceLocator {
     getIt.registerLazySingleton<ChatRepo>(() => ChatRepo());
 
     ///Chat repo
-    getIt.registerLazySingleton<ChatCubit>(() => ChatCubit(getIt()));
+    getIt.registerFactory<ChatCubit>(() => ChatCubit(getIt()));
   }
 }
