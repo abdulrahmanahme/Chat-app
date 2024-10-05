@@ -92,51 +92,17 @@ class _TextFormFieldWidgetState extends State<TextFormFieldWidget> {
       ),
       onTap: widget.onTap,
       initialValue: widget.initialValue,
-      readOnly:  widget.readOnly,
+      readOnly: widget.readOnly,
       decoration: InputDecoration(
         labelText: widget.label,
         labelStyle: widget.labelStyle,
         hintText: widget.hintText,
-        // hintStyle: AppTextStyle.font16darkGray400,
-        // fillColor: widget.fillColor ?? AppColor.primaryColor.withOpacity(0.15),
         filled: _fillColor,
-        
-        // focusColor: const Color(0xff116ACC),
-        // focusedBorder: OutlineInputBorder(
-        //   borderRadius: BorderRadius.circular(8.0),
-        //   borderSide: const BorderSide(
-        //     color: Colors.blue,
-        //     width: 1.0,
-        //   ),
-        // ),
-        errorStyle:const TextStyle(
-          color: Colors.red,
-          fontSize: 14,
-          fontWeight: FontWeight.w400
-        ),
-        contentPadding:const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        errorStyle: const TextStyle(
+            color: Colors.red, fontSize: 14, fontWeight: FontWeight.w400),
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         prefixIcon: widget.prefix,
-        // enabledBorder: OutlineInputBorder(
-        //   borderRadius: BorderRadius.circular(8.0),
-        //   borderSide: const BorderSide(
-        //     color:Colors.grey,
-        //     width: 1.0,
-        //   ),
-        // ),
-        // errorBorder: OutlineInputBorder(
-        //   borderRadius: BorderRadius.circular(8.0),
-        //   borderSide: const BorderSide(
-        //     color: Colors.red,
-        //     width: 1.0,
-        //   ),
-        // ),
-        suffixIcon: widget.suffixIcon,
-        // border: OutlineInputBorder(
-        //   borderRadius: BorderRadius.circular(8.0),
-        //   borderSide: const BorderSide(
-        //     color: Colors.black,
-        //   ),
-        // ),
       ),
     );
   }

@@ -9,7 +9,6 @@ class AuthRepo {
     required String name,
     required String email,
     required String password,
-    required String phone,
   }) async {
     var firebaseUserAuth = await firebaseAuth.createUserWithEmailAndPassword(
       email: email,

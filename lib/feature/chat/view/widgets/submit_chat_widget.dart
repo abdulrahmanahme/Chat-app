@@ -24,11 +24,7 @@ class SubmitChatWidget extends StatelessWidget {
                     onPressed: () {},
                     icon:
                         SvgPicture.asset(AppConst.svgPath + 'attachment.svg')),
-                Expanded(
-                  child: CustomTextFormField(
-                    controller: controller,
-                  ),
-                ),
+                
                 IconButton(
                     onPressed: () {},
                     icon: SvgPicture.asset(

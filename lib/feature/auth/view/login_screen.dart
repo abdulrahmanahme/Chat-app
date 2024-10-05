@@ -1,9 +1,9 @@
 import 'package:chat_app/core/app_colors.dart';
-import 'package:chat_app/core/routing/routing.dart';
 import 'package:chat_app/core/widgets/defult_button.dart';
 import 'package:chat_app/core/widgets/text_from_field.dart';
 import 'package:chat_app/feature/auth/logic/cubit/auth_cubit.dart';
 import 'package:chat_app/feature/auth/logic/cubit/auth_state.dart';
+import 'package:chat_app/feature/auth/view/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -89,6 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         email: emailController.text.trim(),
                                         password:
                                             passwordController.text.trim(),
+                                            context: context
                                       );
                                 }
                               },
@@ -98,10 +99,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            Routes.signUpScreen,
-                          );
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SignUpScreen()));
                         },
                         child: RichText(
                           text: const TextSpan(

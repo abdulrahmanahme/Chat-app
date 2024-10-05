@@ -6,15 +6,6 @@ class ChatRepo {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  /// Get chat user base on chat id and sorted by time
-  void getChatMessages(String chatId) {
-    FirebaseFirestore.instance
-        .collection('chats')
-        .doc(chatId)
-        .collection('messages')
-        .orderBy('timestamp', descending: true)
-        .snapshots();
-  }
 
   /// Update the online status of the current user in the 'users' collection
   Future<void> updateOnlineStatus(bool isOnline, String userId) async {
