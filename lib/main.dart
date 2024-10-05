@@ -1,14 +1,22 @@
-import 'package:chat_app/feature/chat/view/home/home_screen.dart';
+import 'package:chat_app/core/service_locator/service_locator.dart';
+import 'package:chat_app/feature/auth/logic/cubit/auth_cubit.dart';
+import 'package:chat_app/feature/auth/view/login_screen.dart';
+import 'package:chat_app/feature/auth/view/signup_screen.dart';
+import 'package:chat_app/feature/home_screen/view/home_screen.dart';
+
 import 'package:chat_app/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void main() async{
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  ServiceLocator.setup();
   runApp(const MyApp());
 }
 
@@ -31,7 +39,10 @@ class MyApp extends StatelessWidget {
           home: child,
         );
       },
-      child: ChatScreen(),
+      child: BlocProvider(
+        create: (context) =>getIt<AuthCubit>() ,
+        child: SignUpScreen(),
+      ),
     );
   }
 }

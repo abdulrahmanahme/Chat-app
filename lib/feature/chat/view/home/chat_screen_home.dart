@@ -5,8 +5,8 @@ import 'package:chat_bubbles/bubbles/bubble_normal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ChatScreen extends StatelessWidget {
-  ChatScreen({super.key});
+class ChatScreenHome extends StatelessWidget {
+  ChatScreenHome({super.key});
   TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
