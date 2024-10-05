@@ -3,7 +3,10 @@
 A new Flutter project.
 
 ## Getting Started
-
+ - How work with Chap app
+ - First page is login page 
+ - click to create and account 
+ - after the you will login in all user screen and will found all user start chat with them 
 This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:
