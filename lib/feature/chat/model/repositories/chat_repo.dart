@@ -29,7 +29,7 @@ class ChatRepo {
   void sendMessage(String userId, Map<String, dynamic> data) async {
     await FirebaseFirestore.instance
         .collection('chats')
-        .doc(userId)
+        .doc('usersId${userId}')
         .collection('messages')
         .add(data);
   }

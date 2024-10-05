@@ -3,7 +3,7 @@ import 'package:chat_app/feature/auth/logic/cubit/auth_cubit.dart';
 import 'package:chat_app/feature/auth/view/login_screen.dart';
 import 'package:chat_app/feature/auth/view/signup_screen.dart';
 import 'package:chat_app/feature/chat/logic/cubit/chat_cubit.dart';
-import 'package:chat_app/feature/chat/view/all_users_screen.dart';
+import 'package:chat_app/feature/home_screen/view/all_users_screen.dart';
 
 import 'package:chat_app/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -28,7 +28,7 @@ void main() async {
       child: SignUpScreen(),
     ),
     BlocProvider(
-      create: (context) => getIt<ChatCubit>()..fetchAllUsers(),
+      create: (context) => getIt<ChatCubit>(),
       child: AllUsersScreen(),
     ),
    

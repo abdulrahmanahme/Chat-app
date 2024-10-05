@@ -1,9 +1,7 @@
 import 'package:chat_app/feature/chat/logic/cubit/chat_cubit.dart';
-import 'package:chat_app/feature/chat/logic/cubit/chat_state.dart';
+import 'package:chat_app/feature/chat/model/repositories/chat_repo.dart';
 import 'package:chat_app/feature/home_screen/chat_detail_screen.dart';
-import 'package:chat_app/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,22 +10,35 @@ class AllUsersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ChatRepo chatRepo = ChatRepo();
     return Scaffold(
-      appBar: AppBar(
-        title: Text('All Users'),
-      ),
-      body: BlocBuilder<ChatCubit, ChatState>(
-        builder: (context, state) {
-          DatabaseReference usersRef = FirebaseDatabase.instance.ref('users');
-          if (state is GetAllUserLoadingState) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is GetAllUserSuccessState) {
-            return Container(
+        appBar: AppBar(
+          title: Text('All Users'),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(
+                Icons.logout,
+                size: 30,
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
+        body: FutureBuilder<List<Map<String, dynamic>>>(
+          future:chatRepo.fetchAllUsers(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            }
 
-              child: ListView.builder(
-                itemCount: state.userDataList.length,
+            final users = snapshot.data!;
+            return ListView.builder(
+                itemCount: users.length,
                 itemBuilder: (context, index) {
-                  final user = state.userDataList[index];
+                  final user = users[index];
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
@@ -43,25 +54,17 @@ class AllUsersScreen extends StatelessWidget {
                               MaterialPageRoute(
                                 builder: (context) => ChatDetailScreen(
                                   userName: user['username'],
-                                  chatId: usersRef.path,
                                   currentUserId:
                                       FirebaseAuth.instance.currentUser!.uid,
-                                  otherUserId: user['uid'].toString(),
+                                  otherUserId: user['UID'],
                                 ),
                               ),
                             );
                           }),
                     ),
                   );
-                },
-              ),
-            );
-          } else if (state is GetAllUserErrorState) {
-            return Center(child: Text(state.error));
-          }
-          return const Center(child: Text('No users found.'));
-        },
-      ),
-    );
+                });
+          },
+        ));
   }
 }

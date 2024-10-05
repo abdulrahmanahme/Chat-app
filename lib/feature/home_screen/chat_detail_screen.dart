@@ -13,16 +13,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChatDetailScreen extends StatefulWidget {
-  final String chatId;
   final String currentUserId;
   final String otherUserId;
   final String userName;
 
   ChatDetailScreen(
-      {required this.chatId,
-      required this.currentUserId,
+      {required this.currentUserId,
       required this.otherUserId,
       required this.userName});
 
@@ -33,10 +32,14 @@ class ChatDetailScreen extends StatefulWidget {
 class _ChatDetailScreenState extends State<ChatDetailScreen>
     with WidgetsBindingObserver {
   TextEditingController controller = TextEditingController();
-  var chatCubit = BlocProvider.of<ChatCubit>(globleKey.currentContext!);
+  late ChatCubit chatCubit;
+
+  bool _isTextEmpty = false;
 
   @override
   void initState() {
+    chatCubit = BlocProvider.of<ChatCubit>(globleKey.currentContext!);
+
     WidgetsBinding.instance.addObserver(this);
     chatCubit.updateOnlineStatus(true, widget.otherUserId);
     super.initState();
@@ -46,6 +49,8 @@ class _ChatDetailScreenState extends State<ChatDetailScreen>
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     chatCubit.updateOnlineStatus(false, widget.otherUserId);
+    controller.dispose();
+
     super.dispose();
   }
 
@@ -58,13 +63,17 @@ class _ChatDetailScreenState extends State<ChatDetailScreen>
     }
   }
 
+  void _checkIfTextIsEmpty() {
+    _isTextEmpty = controller.text.isEmpty;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.defaultBlackColor,
       appBar: CustomAppBar(
         userName: widget.userName,
-        chatId: widget.chatId,
+        userId: widget.otherUserId,
         image: '',
       ),
       body: BlocConsumer<ChatCubit, ChatState>(
@@ -75,7 +84,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen>
             return StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
                   .collection('chats')
-                  .doc(widget.chatId)
+                  .doc('usersId${widget.otherUserId}')
                   .collection('messages')
                   .orderBy('timestamp', descending: true)
                   .snapshots(),
@@ -87,8 +96,9 @@ class _ChatDetailScreenState extends State<ChatDetailScreen>
                   return Center(child: Text('No messages yet.'));
                 }
                 var messages = snapshot.data!.docs;
-    
+
                 return ListView.builder(
+                  padding: EdgeInsets.only(bottom: 100.h, right: 10.w),
                   reverse: true,
                   itemCount: messages.length,
                   itemBuilder: (context, index) {
@@ -133,16 +143,18 @@ class _ChatDetailScreenState extends State<ChatDetailScreen>
         controller: controller,
         onPressed: () {
           if (controller.text.isNotEmpty) {
-            // _sendMessage(widget.chatId);
             context.read<ChatCubit>().sendMessage(
-                  userId: widget.chatId,
+                  userId: widget.otherUserId,
                   isOnline: true,
                   senderId: widget.currentUserId,
                   text: controller.text,
                   typing: true,
                 );
-    
             controller.clear();
+          } else {
+            context
+                .read<ChatCubit>()
+                .updateOnlineStatus(true, widget.otherUserId);
           }
         },
       ),

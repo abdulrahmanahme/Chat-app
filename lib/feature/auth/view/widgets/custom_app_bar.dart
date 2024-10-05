@@ -13,11 +13,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     required this.userName,
     required this.image,
-    required this.chatId,
+    required this.userId,
   });
   final String userName;
   final String image;
-  final String chatId;
+  final String userId;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             return StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection('chats')
-                    .doc(chatId)
+                    .doc('usersId${userId}')
                     .collection('messages')
                     .orderBy('timestamp', descending: true)
                     .snapshots(),
@@ -57,9 +57,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                           Padding(
                             padding: EdgeInsets.only(bottom: 10.h),
                             child: InkWell(
-                              onTap: (){
-                                    Navigator.pop(context);
-
+                              onTap: () {
+                                Navigator.pop(context);
                               },
                               child: Row(
                                 children: [
@@ -82,8 +81,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                             height: 50.h,
                             width: 120.w,
                             child: ListView.builder(
-                              // padding: EdgeInsets.symmetric(horizontal: 10.w),
-                              // physics: NeverScrollableScrollPhysics(),
                               itemCount: messages.length,
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
@@ -91,16 +88,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                   children: [
                                     CircleAvatar(
                                       radius: 5,
-                                      backgroundColor:
-                                          messages[messages.length - 1]
-                                                  ['isOnline']
-                                              ? Colors.green
-                                              : Colors.red,
+                                      backgroundColor: messages[index]
+                                              ['isOnline']
+                                          ? Colors.green
+                                          : null,
                                     ),
                                     SizedBox(
                                       width: 10.w,
                                     ),
-                                    if (messages[index]['typing'] == true)
+                                    if (messages[messages.length - 1]
+                                            ['typing'] ==
+                                        true)
                                       const Text(
                                         "Typing...",
                                         style: TextStyle(color: Colors.white),

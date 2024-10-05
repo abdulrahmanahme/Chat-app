@@ -1,8 +1,6 @@
 import 'package:chat_app/core/app_colors.dart';
-import 'package:chat_app/core/app_const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 
 class CustomTextFormField extends StatelessWidget {
   CustomTextFormField({super.key, required this.controller ,required this.suffix});

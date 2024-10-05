@@ -28,6 +28,7 @@ class AuthRepo {
           'username': name,
           'email': email,
           'createdAt': ServerValue.timestamp,
+          'UID': user.uid,
         });
       } else {
         print('User data already exists.');

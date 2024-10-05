@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:chat_app/feature/auth/logic/cubit/auth_state.dart';
 import 'package:chat_app/feature/auth/model/repositories/auth/auth_repo.dart';
 import 'package:chat_app/feature/chat/view/all_users_screen.dart';
+import 'package:chat_app/feature/home_screen/view/all_users_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,9 +30,12 @@ class AuthCubit extends Cubit<AuthState> {
           name: name, email: email, password: password);
       if (res.user != null) {
         log('ddddddddddddddddd ${res.user}');
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => AllUsersScreen(),
+          ),
+        );
 
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => AllUsersScreen()));
         AppToast.successBar(message: 'Login successfully');
         if (!isClosed) {
           emit(RegisterSuccessStates());
@@ -53,21 +57,29 @@ class AuthCubit extends Cubit<AuthState> {
 
   void signIn(
       {required String email, required String password, context}) async {
-    emit(LoginLoadingStates());
+    if (isClosed) {
+      emit(LoginLoadingStates());
+    }
     try {
       final credential =
           await _authRepo.signIn(email: email, password: password);
 
       if (credential.user != null) {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => AllUsersScreen()));
+       Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => AllUsersScreen(),
+          ),
+        );
         AppToast.successBar(message: 'Login successfully');
-        emit(LoginSuccessStates());
+        if (isClosed) {
+          emit(LoginSuccessStates());
+        }
       }
     } on FirebaseAuthException catch (e) {
       AppToast.errorBar(message: e.message);
-
-      emit(LoginErrorStates(error: e.message.toString()));
+      if (isClosed) {
+        emit(LoginErrorStates(error: e.message.toString()));
+      }
     } catch (e) {
       AppToast.errorBar(message: 'There is an Error $e');
     }

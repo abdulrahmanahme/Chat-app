@@ -17,7 +17,6 @@ class ChatCubit extends Cubit<ChatState> {
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   String? currentUserId;
   Timer? _checkTypingTimer;
-  List<Map<String, dynamic>> listUserData=[];
 
 
   Future<void> updateOnlineStatus(bool isOnline, String userId) async {
@@ -71,14 +70,13 @@ class ChatCubit extends Cubit<ChatState> {
     });
   }
 
-  void fetchAllUsers() async {
+  fetchAllUsers() async {
      if (!isClosed) {
     emit(GetAllUserLoadingState());
 
      }
     try {
       final resp = await chatRepo.fetchAllUsers();
-      listUserData=resp;
       currentUserId = currentUser?.uid;
        if (!isClosed) {
       emit(GetAllUserSuccessState(resp));
@@ -101,14 +99,5 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  Future<void> _updateOnlineStatus(bool isOnline, String userId) async {
-    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-    try {
-      await _firestore.collection('chats').doc(userId).update({
-        'isOnline': isOnline,
-      });
-    } catch (error) {
-      print('Error updating online status: $error');
-    }
-  }
+
 }
